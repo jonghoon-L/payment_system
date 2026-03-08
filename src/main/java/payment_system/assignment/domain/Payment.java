@@ -1,16 +1,40 @@
 package payment_system.assignment.domain;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "payments")
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Payment {
-    private final Long id;
-    private final Order order;
-    private final int finalAmount;
-    private final PaymentMethod paymentMethod;
-    private final LocalDateTime paymentDateTime;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false, unique = true)
+    private Order order;
+
+    @Column(nullable = false)
+    private int finalAmount;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentMethod paymentMethod;
+
+    @Column(nullable = false)
+    private LocalDateTime paymentDateTime;
+
+    public Payment(Order order, int finalAmount, PaymentMethod paymentMethod, LocalDateTime paymentDateTime) {
+        this.order = order;
+        this.finalAmount = finalAmount;
+        this.paymentMethod = paymentMethod;
+        this.paymentDateTime = paymentDateTime;
+    }
 }

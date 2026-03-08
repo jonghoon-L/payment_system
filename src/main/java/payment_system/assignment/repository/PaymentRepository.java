@@ -1,11 +1,7 @@
 package payment_system.assignment.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import payment_system.assignment.domain.Payment;
 
-import java.util.Optional;
-
-public interface PaymentRepository {
-    Payment save(Payment payment);
-
-    Optional<Payment> findById(Long id);
+public interface PaymentRepository extends JpaRepository<Payment, Long> {
 }
